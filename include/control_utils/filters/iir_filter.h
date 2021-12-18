@@ -22,8 +22,7 @@ private:
 public:
     // IirFilterBw2rd():cutoff_freq_(-1), xk_(3,0), xk_filtered_(3,0), xk_diff_(3,0), xk_diff_filtered_(3,0){}
     /**
-     * @brief Construct a new IirFilterBw object
-     * 
+     * @brief Construct a new IirFilterBw object 
      * @param order: order of iirfilter, value in 1 or 2
      * @param cutoff_freq: in Hz
      */
@@ -88,9 +87,9 @@ public:
         return xk_filtered_.at(0);
     }
 
-    double update_dx(const bool has_update, const double delta_t, const double xk){
+    double update_dx(const bool updated, const double delta_t, const double xk){
 
-        if(!has_update){
+        if(!updated){
             update(delta_t, xk);
         }
 
