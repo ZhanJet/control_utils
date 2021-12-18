@@ -118,7 +118,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  # include
+  include
   include/${PROJECT_NAME}
   ${catkin_INCLUDE_DIRS}
 )
@@ -137,6 +137,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(filter_test_node test/filter_test_node.cpp)
+add_executable(execution_timer_test test/execution_timer_test.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
