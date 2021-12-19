@@ -18,6 +18,10 @@
 double MAX_VEL[nDOF]    = {1.0, 1.0, 0.5} ;
 double target_vel[nDOF] = {.0, .0, .0}    ;
 
+double gen_rand_angle(int l, int u, double precision=1e-6){
+    return double(rand()%(u-l) + l + precision*(rand() % int(1 / precision)));
+}
+
 void targetCB(const std_msgs::Float64MultiArrayConstPtr& msg){
   int size = sizeof(msg->data)/sizeof(msg->data[0]);
   ROS_ERROR_COND(size != nDOF, "Wrong size of target velocities, which should be %d!", nDOF);
@@ -105,7 +109,8 @@ int main(int argc, char** argv){
   {
     // Auto-generate velocity command for test
     sim_time = ros::Time::now() - start_time;
-    ref_vel.data = sign(std::sin(0.5*sim_time.toSec()))*1.0 + 0.0*std::sin(sim_time.toSec());
+    ref_vel.data = sign(std::sin(0.5*sim_time.toSec()))*1.0 + 0.0*std::sin(sim_time.toSec()) + 0.05*gen_rand_angle(-1, 1);
+    // ref_vel.data = gen_rand_angle(-2, 2);
 
     IP->TargetPositionVector->VecData[0] = ref_vel.data ;
     // IP->TargetPositionVector->VecData[0] = target_vel[0] ;
