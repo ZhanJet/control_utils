@@ -26,13 +26,12 @@ void targetCB(const std_msgs::Float64MultiArrayConstPtr& msg){
 }
 
 int main(int argc, char** argv){
-  ros::init(argc, argv, "otg_jl_test");
+  ros::init(argc, argv, "otg_al_test");
   ros::NodeHandle nh;
 
   ros::Subscriber sub_targetVel  = nh.subscribe("target_vel", 5, targetCB);
   ros::Publisher pub_plannedVel  = nh.advertise<std_msgs::Float64MultiArray>("planned_vel", 5);
   ros::Publisher pub_plannedAcc  = nh.advertise<std_msgs::Float64MultiArray>("planned_acc", 5);
-  ros::Publisher pub_plannedJerk = nh.advertise<std_msgs::Float64MultiArray>("planned_jerk", 5);
 
   std_msgs::Float64MultiArray planned_vel, planned_acc;
   planned_vel.data.assign(nDOF, .0);
