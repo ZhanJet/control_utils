@@ -49,8 +49,8 @@ public:
     }
 
     inline void start() {
+        std::cout << "Start Timing..." << std::endl;
         T_start = Clock::now();
-        std::cout << "Start Timing" << std::endl;
     }
 
     inline void stop() {

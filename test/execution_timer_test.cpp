@@ -4,7 +4,7 @@ int main() {
     { // empty scope to display ExecutionTimer's destructor's message
          // displayed in milliseconds
          ExecutionTimer<std::chrono::milliseconds> timer;
-        //  timer.start();
+         timer.start();
 
          // function or code block here
 

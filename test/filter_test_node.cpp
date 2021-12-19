@@ -25,11 +25,11 @@ int main(int argc, char** argv) {
     ros::Publisher deltat_pub = nh.advertise<std_msgs::Float64>("delta_t", 1);
     ros::Publisher setpoint_pub = nh.advertise<std_msgs::Float64>("setpoint", 1);
 
-    ros::Rate rate(50.0);
+    ros::Rate rate(100.0);
     double cutoff_freq = 10.0;
     // double zeta = 1.0;
     // IirFilterBw2rd* filter = new IirFilterBw2rd(cutoff_freq, zeta);
-    IirFilterBw* filter = new IirFilterBw(2, 50, cutoff_freq);
+    IirFilterBw* filter = new IirFilterBw(2, 100, cutoff_freq);
     ros::Time prev_time, start_time;
     ros::Duration delta_t, sim_time;
     std_msgs::Float64 x, dx, delta_t_topic;

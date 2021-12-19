@@ -121,6 +121,12 @@ include_directories(
   include
   include/${PROJECT_NAME}
   ${catkin_INCLUDE_DIRS}
+  3rdparty/ReflexxesTypeII/include
+)
+
+link_directories(
+  ${catkin_LIB_DIRS}
+  3rdparty/ReflexxesTypeII/lib/x64/static
 )
 
 ## Declare a C++ library
@@ -152,6 +158,13 @@ add_executable(execution_timer_test test/execution_timer_test.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(filter_test_node
   ${catkin_LIBRARIES}
+)
+
+## Link to static library
+add_executable(RMLVelSample src/otg_jerk_limited.cpp)
+target_link_libraries(RMLVelSample
+  ${catkin_LIBRARIES} 
+  ReflexxesTypeII
 )
 
 #############
