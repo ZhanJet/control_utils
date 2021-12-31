@@ -1,3 +1,9 @@
+/**
+ Copyright (c) 2021, Zhangjie Tu.
+ All rights reserved.
+  @author zhanjet
+ */
+
 #ifndef EXECUTION_TIMER_H
 #define EXECUTION_TIMER_H
 

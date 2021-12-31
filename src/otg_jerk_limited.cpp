@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <ros/ros.h>
 #include <ros/time.h>
@@ -10,6 +9,8 @@
 #include <RMLPositionFlags.h>
 #include <RMLPositionInputParameters.h>
 #include <RMLPositionOutputParameters.h>
+
+#include <planning/vel_profile_S.h>
 
 #define     sign(x)     (((x) < 0) ? -1 : 1)
 #define     nDOF        3
@@ -78,14 +79,14 @@ int main(int argc, char** argv){
   IP->CurrentAccelerationVector->VecData  [2] =    0.0      ;
 
   // Conresponding to Acceleration actually
-  IP->MaxVelocityVector->VecData          [0] =    1.0*MAX_VEL[0] ;
-  IP->MaxVelocityVector->VecData          [1] =    1.0*MAX_VEL[1] ;
-  IP->MaxVelocityVector->VecData          [2] =    1.0*MAX_VEL[2] ;
+  IP->MaxVelocityVector->VecData          [0] =    5.0*MAX_VEL[0] ;
+  IP->MaxVelocityVector->VecData          [1] =    5.0*MAX_VEL[1] ;
+  IP->MaxVelocityVector->VecData          [2] =    5.0*MAX_VEL[2] ;
 
   // Conresponding to Jerk actually
-  IP->MaxAccelerationVector->VecData      [0] =    2.0*MAX_VEL[0] ;
-  IP->MaxAccelerationVector->VecData      [1] =    2.0*MAX_VEL[1] ;
-  IP->MaxAccelerationVector->VecData      [2] =    2.0*MAX_VEL[2] ;
+  IP->MaxAccelerationVector->VecData      [0] =    25.0*MAX_VEL[0] ;
+  IP->MaxAccelerationVector->VecData      [1] =    25.0*MAX_VEL[1] ;
+  IP->MaxAccelerationVector->VecData      [2] =    25.0*MAX_VEL[2] ;
 
   IP->MaxJerkVector->VecData              [0] =    0.0*MAX_VEL[0];
   IP->MaxJerkVector->VecData              [1] =    0.0*MAX_VEL[1];
@@ -96,6 +97,10 @@ int main(int argc, char** argv){
   IP->SelectionVector->VecData            [2] =    true       ;
 
   Flags.SynchronizationBehavior   =   RMLFlags::NO_SYNCHRONIZATION;
+
+  // for testing VelProfileS
+  std::vector<std::vector<double> > constraints{{MAX_VEL[0], 5.0*MAX_VEL[0], 10.0*MAX_VEL[0]}};
+  VelProfileS vel_planner(1, dT, constraints);
 
   // ********************************************************************
   // Starting the control loop
@@ -109,7 +114,7 @@ int main(int argc, char** argv){
   {
     // Auto-generate velocity command for test
     sim_time = ros::Time::now() - start_time;
-    ref_vel.data = sign(std::sin(0.5*sim_time.toSec()))*1.0 + 0.0*std::sin(sim_time.toSec()) + 0.05*gen_rand_angle(-1, 1);
+    ref_vel.data = sign(std::sin(0.5*sim_time.toSec()))*1.0 + 0.0*std::sin(0.5*sim_time.toSec()) + 0.00*gen_rand_angle(-1, 1);
     // ref_vel.data = gen_rand_angle(-2, 2);
 
     IP->TargetPositionVector->VecData[0] = ref_vel.data ;
@@ -136,6 +141,11 @@ int main(int argc, char** argv){
     *IP->CurrentVelocityVector      =   *OP->NewVelocityVector      ;
     *IP->CurrentAccelerationVector  =   *OP->NewAccelerationVector  ;
 
+    // for testing VelProfileS
+    std::vector<double> vel_trgt{ref_vel.data};
+    std::vector<double> vel_planned(1);
+    vel_planner.update(vel_trgt, vel_planned);
+
     planned_vel.data[0] = OP->NewPositionVector->VecData[0];
     planned_vel.data[1] = OP->NewPositionVector->VecData[1];
     planned_vel.data[2] = OP->NewPositionVector->VecData[2];
@@ -146,7 +156,8 @@ int main(int argc, char** argv){
     planned_acc.data[1] = OP->NewVelocityVector->VecData[1];
     planned_acc.data[2] = OP->NewVelocityVector->VecData[2];
 
-    planned_jerk.data[0] = OP->NewAccelerationVector->VecData[0];
+    planned_jerk.data[0] = vel_planned[0];  // for testing VelProfileS
+    // planned_jerk.data[0] = OP->NewAccelerationVector->VecData[0];
     planned_jerk.data[1] = OP->NewAccelerationVector->VecData[1];
     planned_jerk.data[2] = OP->NewAccelerationVector->VecData[2];
 
