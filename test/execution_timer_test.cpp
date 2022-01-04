@@ -1,4 +1,8 @@
 #include "utils/execution_timer.h"
+#include "unistd.h"
+#include <thread>
+
+using std::this_thread::sleep_for;
 
 int main() {
     { // empty scope to display ExecutionTimer's destructor's message
@@ -7,6 +11,8 @@ int main() {
          timer.start();
 
          // function or code block here
+         sleep_for(std::chrono::milliseconds(3000));
+         
 
          timer.stop();
     }
@@ -16,6 +22,8 @@ int main() {
         // timer.start();
 
         // code block here...
+        usleep(1000);
+
 
         timer.stop();
     }
@@ -25,6 +33,7 @@ int main() {
     //    timer.start();
 
        // code block here...
+       sleep_for(std::chrono::nanoseconds(3000000));
 
        timer.stop();
     }
@@ -34,6 +43,7 @@ int main() {
     //    timer.start();
 
        // code block here...
+       sleep(3);
 
        timer.stop();
     }
