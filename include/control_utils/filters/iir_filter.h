@@ -26,21 +26,21 @@ public:
      * @param order: order of iirfilter, value in 1 or 2
      * @param cutoff_freq: in Hz
      */
-    IirFilterBw(const int order, const double sampling_rate, const double cutoff_freq): 
+    IirFilterBw(int order, double sampling_rate, double cutoff_freq): 
                 order_(order), sampling_rate_(sampling_rate), cutoff_freq_(cutoff_freq), zeta_(1.),
                 xk_(order+1,0.), xk_filtered_(order+1,0.), xk_diff_(order+1,0.), xk_diff_filtered_(order+1,0.){}
     ~IirFilterBw(){}
 
-    void setSamplingRate(const double sampling_rate){
+    void setSamplingRate(double sampling_rate){
         sampling_rate_ = sampling_rate;
     }
 
-    void setCutoffFreq(const double cutoff_freq){
+    void setCutoffFreq(double cutoff_freq){
         cutoff_freq_ = cutoff_freq;
         if(cutoff_freq_ < 0.0) cutoff_freq_ = -1;
     }
 
-    void setZeta(const double zeta){
+    void setZeta(double zeta){
         zeta_ = zeta;
         if(zeta_ < 0.0) zeta_ = 1;
     }
