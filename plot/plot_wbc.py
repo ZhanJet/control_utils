@@ -12,7 +12,7 @@ from collections import deque
 
 dt = 0.01
 # Load data
-load_from_file = False
+load_from_file = True
 dir = '/home/zhanjet/moying_ws/src/mobile_manipulator_controller/admittance_control/record/'
 bag_files = ['obst_avoid_2022-01-20-12-26-20.bag', 'obst_avoid_2022-01-20-12-13-26.bag', 
             'obst_avoid_2022-01-29-20-48-07.bag', 'obst_avoid_2022-01-29-21-14-23.bag']
