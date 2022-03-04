@@ -8,11 +8,12 @@ def read_csv(csvfile):
         csvreader = csv.reader(file)
         #reading first row of field names
         fields = csvreader.__next__()
-        csvreader = csv.reader(file, quoting=csv.QUOTE_NONNUMERIC)
         print('Field Names\n--------------')
         for field in fields:
             print("%8s"%field, end=', ')
             data[field] = np.array([])
+        
+        csvreader = csv.reader(file, quoting=csv.QUOTE_NONNUMERIC)
         #reading rows
         for row in csvreader:
             for i, field in enumerate(fields):
